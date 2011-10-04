@@ -1,7 +1,7 @@
 <?php
 // Custom login screen
-//add_action('login_head', 'custom_login_style');
-function custom_login_style(){
+//add_action( 'login_head', 'custom_login_style' );
+function custom_login_style() {
 ?>
 	<style type="text/css">
     html, body {
@@ -16,32 +16,34 @@ function custom_login_style(){
 }
 
 // Custom admin logo
-//add_action('admin_head', 'custom_admin_logo', 11);
+//add_action( 'admin_head', 'custom_admin_logo', 11 );
 function custom_admin_logo() {
-echo '<style type="text/css">
+	?>
+	<style type="text/css">
 		#header-logo {
-			background:url('.get_bloginfo('template_directory').'/images/custom-admin-logo.gif) left center no-repeat !important;
+			background:url(<?php bloginfo( 'template_directory' ); ?>/images/custom-admin-logo.gif) left center no-repeat !important;
 			width:32px !important;
 			height:32px !important;
 		}
-	</style>';
+	</style>
+	<?php
 }
 
 // Remove lost password link from login screen
 //add_action( 'login_head', 'remove_password_reset' );
-function remove_password_reset_text( $text ){
-	if($text == 'Lost your password?'){
+function remove_password_reset_text( $text ) {
+	if( $text == 'Lost your password?' ) {
 		$text = '';
 	}
 	return $text;
 }
 
-function remove_password_reset(){
+function remove_password_reset() {
 	add_filter( 'gettext', 'remove_password_reset_text' );
 }
 
 // Remove extra information from header
-//add_filter('the_generator', 'remove_version');
+//add_filter( 'the_generator', 'remove_version' );
 function remove_version() {
 	return '';
 }
@@ -57,18 +59,19 @@ remove_action( 'wp_head', 'start_post_rel_link', 10, 0 ); // start link
 remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0); // Display relational links for the posts adjacent to the current post.
 remove_action( 'wp_head', 'adjacent_posts_rel_link', 10, 0 ); // Display relational links for the posts adjacent to the current post.
 remove_action( 'wp_head', 'wp_generator' ); // Display the XHTML generator that is generated on the wp_head hook, WP version
+remove_action( 'wp_head', 'rel_canonical' ); // Canonical URL link
 */
 
 // Custom footer text
-//add_filter('admin_footer_text', 'custom_footer_text');
+//add_filter( 'admin_footer_text', 'custom_footer_text' );
 function custom_footer_text() {
 	echo "Change this text";
 }
 
 // Remove unwanted admin buttons
-//add_action('admin_menu', 'remove_admin_menu_sections');
+//add_action( 'admin_menu', 'remove_admin_menu_sections' );
 function remove_admin_menu_sections() {
-	remove_menu_page('link-manager.php');
+	remove_menu_page( 'link-manager.php' );
 }
 
 // Custom post type
@@ -78,7 +81,10 @@ function create_post_type() {
 		array(
 			'labels' => array(
 				'name' => __( 'Products' ),
-				'singular_name' => __( 'Product' )
+				'singular_name' => __( 'Product' ),
+				'add_new' => __( 'Add Product' ),
+				'add_new_item' => __( 'Add New Product' ),
+				'edit_item' => __( 'Edit Product' )
 			),
 		'public' => true,
 		'has_archive' => true,
@@ -87,39 +93,27 @@ function create_post_type() {
 }
 
 // Custom excerpt length
-//add_filter('excerpt_length', 'new_excerpt_length');
-function new_excerpt_length($length) {
+//add_filter( 'excerpt_length', 'new_excerpt_length' );
+function new_excerpt_length( $length ) {
 	return 30;
 }
 
 // Custom excerpty elipses
-//add_filter('excerpt_more', 'new_excerpt_more');
-function new_excerpt_more($more) {
+//add_filter( 'excerpt_more', 'new_excerpt_more' );
+function new_excerpt_more( $more ) {
 	return '...';
 }
 
-// Custom user roles
-remove_role('subscriber');
-remove_role('author');
-remove_role('contributor');
-
-add_role('content_creator', 'Content Creator', array(
-	'read' => true,
-	'edit_pages' => true,
-	'edit_others_pages' => true
-));
-
 // Custom image size
-if(function_exists('add_image_size')){ 
-	//add_image_size('my-custom-size', 100, 100, true);
+if ( function_exists( 'add_image_size' ) ) { 
+	//add_image_size( 'my-custom-size', 100, 100, true );
 }
 
 // Remove default tooltip popups on links
-//add_filter('wp_list_categories','remove_title_attribute');
-//add_filter('wp_list_pages','remove_title_attribute');
-function remove_title_attribute($output){
-	$output = preg_replace('/title=\"(.*?)\"/','',$output);
+//add_filter( 'wp_list_categories', 'remove_title_attribute' );
+//add_filter( 'wp_list_pages', 'remove_title_attribute' );
+function remove_title_attribute( $output ) {
+	$output = preg_replace( '/title=\"(.*?)\"/','', $output );
 	return $output;
 }
-
 ?>
